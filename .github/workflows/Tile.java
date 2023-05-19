@@ -5,9 +5,8 @@ public class Tile {
     public Tile(boolean hasMine){
         number = 0;
         this.hasMine = hasMine;
-        this.revealed = false;
+        revealed = false;
     }
-
     public boolean getMine(){
         return hasMine;
     }
@@ -16,5 +15,11 @@ public class Tile {
     }
     public int getNumber(){
         return number;
+    }
+    public void setNumber(int num){
+        number = num;
+    }
+    public void reveal(){
+        revealed = true;
     }
 }
