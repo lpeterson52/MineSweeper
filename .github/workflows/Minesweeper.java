@@ -14,17 +14,55 @@ public class Minesweeper {
     Tile[][] grid = new Tile[10][10];
     boolean DEBUG = false;
 
+
     public Minesweeper() {
         createGrid(10);
-        grid[0][0].reveal();
+        runGame();
     }
+    public void runGame(){
+        generateNum();
 
+        while(isRevealed() != true){
+            String l = askUser();
+            if(grid[Integer.parseInt(l.substring(0,1))][Integer.parseInt(l.substring(2,3))].getMine()){
+                System.out.println("YOU LOSE");
+                printNums();
+                return;
+            }
+            revealBoard(Integer.parseInt(l.substring(0,1)), Integer.parseInt(l.substring(2,3)));
+            if(isRevealed()){
+                System.out.println("YOU WIN");
+                printNums();
+            }
+            System.out.println();
+            printRevealed();
+        }
+        
+        
+    }
+    public boolean isRevealed(){
+        for(int x = 0; x != grid.length;x++){
+            for(int y = 0; y != grid[x].length;y++){
+                if(grid[x][y].isRevealed()==false && grid[x][y].getMine()==false){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public void revealBoard(int x, int y){
+        setCheckedFalse();
+        grid[x][y].reveal();
+        appear(x,y);
+    }
     public String askUser() {
         Console console = System.console();
-        String inputString = console.readLine("enter x and y to reveal with comme in between ex:0,1");
-        revealTile(inputString);
+        String inputString = console.readLine("enter x and y to reveal with comme in between ex:0,1: ");
+        // revealTile(inputString);
         return inputString;
     }
+
+    
 
     // reveals a certain tile
     public void revealTile(String word) {
@@ -108,30 +146,43 @@ public class Minesweeper {
             System.out.println();
         }
     }
-
+    public void setCheckedFalse(){
+        for (int r = 0; r < grid.length ; r++) {
+            for (int c = 0; c < grid[r].length; c++) {
+                grid[r][c].setChecked(false);
+            }
+        }
+    }
     // the first click the player does
     public void appear(int x, int y) {
-        // if outside edge
-        if (x < 0 || y < 0 || x > grid.length || y > grid[x].length || grid[x][y].getMine()) {
-            System.out.println("edge");
+        // if outside edge 
+        if (x < 0|| x > grid.length-1 || y < 0 || y > grid[x].length -1) {
+            // System.out.println("");
             return;
         }
+        
+        if(grid[x][y].getChecked()){
+            return;
+        }
+        grid[x][y].setChecked(true);
         // if mine
-        else if (grid[x][y].getMine()) {
+         if (grid[x][y].getMine() ) {
+            grid[x][y].setChecked(true);
             System.out.println("mine");
+            return;
+        }
+        else if(grid[x][y].getNumber() > 0){
+            grid[x][y].setChecked(true);
+            grid[x][y].reveal();
             return;
         }
         // if number
          else {
             grid[x][y].reveal();
-            appear(x - 1, y - 1);
             appear(x - 1, y);
-            appear(x - 1, y + 1);
             appear(x, y + 1);
             appear(x, y - 1);
-            appear(x + 1, y - 1);
             appear(x + 1, y);
-            appear(x + 1, y - 1);
         }
     }
 
@@ -153,7 +204,7 @@ public class Minesweeper {
                     if (grid[x + 1][y + 1].getMine()) {
                         countMine++;
                     }
-                    if (grid[x + 1][y + 1].getMine()) {
+                    if (grid[x][y + 1].getMine()) {
                         countMine++;
                     }
                     grid[x][y].setNumber(countMine);
