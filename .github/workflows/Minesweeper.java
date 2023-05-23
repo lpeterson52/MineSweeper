@@ -17,12 +17,15 @@ public class Minesweeper {
 
     public Minesweeper() {
         createGrid(10);
-        runGame();
+        generateNum();
+        revealBoard(0,0);
+        printNums();
+        // runGame();
     }
     public void runGame(){
         generateNum();
 
-        while(isRevealed() != true){
+        while(isCompletelyRevealed() != true){
             String l = askUser();
             if(grid[Integer.parseInt(l.substring(0,1))][Integer.parseInt(l.substring(2,3))].getMine()){
                 System.out.println("YOU LOSE");
@@ -30,7 +33,7 @@ public class Minesweeper {
                 return;
             }
             revealBoard(Integer.parseInt(l.substring(0,1)), Integer.parseInt(l.substring(2,3)));
-            if(isRevealed()){
+            if(isCompletelyRevealed()){
                 System.out.println("YOU WIN");
                 printNums();
             }
@@ -40,7 +43,11 @@ public class Minesweeper {
         
         
     }
-    public boolean isRevealed(){
+
+    public Tile getGrid(int x, int y){
+        return grid[x][y];
+    }
+    public boolean isCompletelyRevealed(){
         for(int x = 0; x != grid.length;x++){
             for(int y = 0; y != grid[x].length;y++){
                 if(grid[x][y].isRevealed()==false && grid[x][y].getMine()==false){
@@ -180,9 +187,13 @@ public class Minesweeper {
          else {
             grid[x][y].reveal();
             appear(x - 1, y);
+            appear(x - 1, y+1);
+            appear(x - 1, y-1);
             appear(x, y + 1);
             appear(x, y - 1);
             appear(x + 1, y);
+            appear(x + 1, y+1);
+            appear(x + 1, y-1);
         }
     }
 
