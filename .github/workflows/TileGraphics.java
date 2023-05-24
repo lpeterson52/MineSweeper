@@ -58,6 +58,10 @@ public class TileGraphics implements MouseListener{
             g.setColor(Color.BLACK);
             g.drawString("7", x + 13, y + 31);
         }
+        if(num == -1){
+            g.setColor(Color.RED);
+            g.drawString("X", x + 13, y + 31);
+        }
     }
     }
 

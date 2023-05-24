@@ -22,33 +22,22 @@ public class graphics extends JPanel implements MouseListener {
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        JLabel label = new JLabel();
-        label.setBounds(20 + 40 * 0,0 * 40 + 20,40,40);
-        String s = "" + m.getGrid(0,0).getNumber();
-        label.setText(s);
-        label.setBackground(Color.GRAY);
-        label.setOpaque(true);
-        label.addMouseListener(this);
-        this.add(label);
+
         for (int l = 0; l < 10; l++) {
             for (int w = 0; w < 10; w++) {
-                // TileGraphics t = new TileGraphics(20 + 40 * l, w * 40 + 20, m.getGrid(l, w).getNumber(), g,
-                //         m.getGrid(l, w).isRevealed());
-                        // t.addMouseListener(this);
-                        // t.setBounds(20 + 40 * l, w * 40 + 20,60+40*l,60+40*w);
-                        // JLabel label = new JLabel();
-                        // label.setBounds(20 + 40 * l,w * 40 + 20,40,40);
-                        // String s = "" + m.getGrid(l,w).getNumber();
-                        // label.setText(s);
-                        // label.setBackground(Color.GRAY);
-                        // label.setOpaque(true);
-                        // label.addMouseListener(this);
-                        // this.add(label);
+                TileGraphics t = new TileGraphics(20 + 40 * l, w * 40 + 20, m.getGrid(w, l).getNumber(), g,
+                        true);
+
                         
             
 
             }
         }
+    }
+    
+    public void revealTile(){
+
+        
     }
 
     /**
