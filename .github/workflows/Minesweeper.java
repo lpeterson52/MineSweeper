@@ -43,7 +43,13 @@ public class Minesweeper {
         
         
     }
-
+    public void revealBoard(){
+        for(int x = 0; x != grid.length;x++){
+            for(int y = 0; y != grid[x].length;y++){
+                grid[x][y].reveal();
+            }
+        }
+    }
     public Tile getGrid(int x, int y){
         return grid[x][y];
     }

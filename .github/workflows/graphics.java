@@ -15,29 +15,40 @@ public class graphics extends JPanel implements MouseListener {
     private static final long serialVersionUID = 7148504528835036003L;
     Minesweeper m = new Minesweeper();
     boolean flagging = false;
-
+    private int x;
+    private int y;
+    private int cX;
+    private int cY;
+    private boolean won = false;
     /**
      * Called by the runtime system whenever the panel needs painting.
      */
-    
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
 
+    public void paint(Graphics g) {
+        super.paint(g);
+        JLabel label = new JLabel();
+        label.setBounds(0, 0, 460, 600);
+        add(label);
+        label.addMouseListener(this);
         for (int l = 0; l < 10; l++) {
             for (int w = 0; w < 10; w++) {
                 TileGraphics t = new TileGraphics(20 + 40 * l, w * 40 + 20, m.getGrid(w, l).getNumber(), g,
-                        true);
-
-                        
-            
+                        m.getGrid(w, l).isRevealed());
 
             }
         }
-    }
-    
-    public void revealTile(){
-
-        
+        if(m.isCompletelyRevealed() && won == false){
+            g.drawString("YOU WIN",150,500);
+            won = true;
+            m.revealBoard();
+            repaint();
+        }
+        if(won){
+            g.drawString("YOU WIN",150,500);
+        }
+        if(m.getGrid(cY,cX).getMine()){
+            g.drawString("YOU LOSE",150,500);
+        }
     }
 
     /**
@@ -57,8 +68,15 @@ public class graphics extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("1");
-    }   
+        x = e.getX();
+        y = e.getY();
+        cX =  (x - 30) / 40;
+        cY =  (y - 30) / 40;
+        System.out.println(cX);
+        System.out.println(cY);
+        m.appear(cY, cX);
+        repaint();
+    }
 
     @Override
     public void mouseEntered(MouseEvent e) {

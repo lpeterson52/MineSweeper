@@ -3,10 +3,14 @@ public class Tile {
     private int number;
     private boolean revealed;
     public boolean checked;
+    public boolean flagged;
     public Tile(boolean hasMine){
         number = 0;
         this.hasMine = hasMine;
         revealed = false;
+    }
+    public boolean getFlag(){
+        return flagged;
     }
     public void setChecked(boolean x){
         checked = x;
