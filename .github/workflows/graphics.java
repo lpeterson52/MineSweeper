@@ -11,9 +11,6 @@ import javax.swing.JFrame;
 import java.awt.Font;
 import javax.swing.JPanel;
 
-/**
- * A panel maintaining a picture of a Do Not Enter sign.
- */
 public class graphics extends JPanel implements MouseListener {
     private static final long serialVersionUID = 7148504528835036003L;
     Minesweeper m = new Minesweeper();
@@ -26,9 +23,6 @@ public class graphics extends JPanel implements MouseListener {
     private boolean won = false;
     private boolean justFlagged = false;
 
-    /**
-     * Called by the runtime system whenever the panel needs painting.
-     */
     public graphics() {
         KeyListener listener = new MyKeyListener();
         addKeyListener(listener);
@@ -127,9 +121,6 @@ public class graphics extends JPanel implements MouseListener {
         }
     }
 
-    /**
-     * A little driver in case you want a stand-alone application.
-     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             graphics panel = new graphics();
