@@ -6,76 +6,76 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.*;
-
 import java.util.Scanner;
 
 public class Minesweeper {
 
     Tile[][] grid = new Tile[10][10];
     boolean DEBUG = false;
-
+    private int firstTime;
 
     public Minesweeper() {
-        createGrid(10);
+        createGrid(15);
         generateNum();
-        revealBoard(0,0);
-        printNums();
         // runGame();
     }
-    public void runGame(){
+
+    public void runGame() {
         generateNum();
 
-        while(isCompletelyRevealed() != true){
+        while (isCompletelyRevealed() != true) {
             String l = askUser();
-            if(grid[Integer.parseInt(l.substring(0,1))][Integer.parseInt(l.substring(2,3))].getMine()){
+            if (grid[Integer.parseInt(l.substring(0, 1))][Integer.parseInt(l.substring(2, 3))].getMine()) {
                 System.out.println("YOU LOSE");
                 printNums();
                 return;
             }
-            revealBoard(Integer.parseInt(l.substring(0,1)), Integer.parseInt(l.substring(2,3)));
-            if(isCompletelyRevealed()){
+            revealBoard(Integer.parseInt(l.substring(0, 1)), Integer.parseInt(l.substring(2, 3)));
+            if (isCompletelyRevealed()) {
                 System.out.println("YOU WIN");
                 printNums();
             }
             System.out.println();
             printRevealed();
         }
-        
-        
+
     }
-    public void revealBoard(){
-        for(int x = 0; x != grid.length;x++){
-            for(int y = 0; y != grid[x].length;y++){
+
+    public void revealBoard() {
+        for (int x = 0; x != grid.length; x++) {
+            for (int y = 0; y != grid[x].length; y++) {
                 grid[x][y].reveal();
             }
         }
     }
-    public Tile getGrid(int x, int y){
+
+    public Tile getGrid(int x, int y) {
         return grid[x][y];
     }
-    public boolean isCompletelyRevealed(){
-        for(int x = 0; x != grid.length;x++){
-            for(int y = 0; y != grid[x].length;y++){
-                if(grid[x][y].isRevealed()==false && grid[x][y].getMine()==false){
+
+    public boolean isCompletelyRevealed() {
+        for (int x = 0; x != grid.length; x++) {
+            for (int y = 0; y != grid[x].length; y++) {
+                if (grid[x][y].isRevealed() == false && grid[x][y].getMine() == false) {
                     return false;
                 }
             }
         }
         return true;
     }
-    public void revealBoard(int x, int y){
+
+    public void revealBoard(int x, int y) {
         setCheckedFalse();
         grid[x][y].reveal();
-        appear(x,y);
+        appear(x, y);
     }
+
     public String askUser() {
         Console console = System.console();
         String inputString = console.readLine("enter x and y to reveal with comme in between ex:0,1: ");
         // revealTile(inputString);
         return inputString;
     }
-
-    
 
     // reveals a certain tile
     public void revealTile(String word) {
@@ -96,24 +96,15 @@ public class Minesweeper {
             }
         }
         while (count < numMines) {
-            if (DEBUG) {
-                System.out.println("while test");
-            }
             for (int r = 0; r < grid.length; r++) {
                 for (int c = 0; c < grid[r].length; c++) {
                     if (Math.random() <= probability) {
                         if (grid[r][c] != null && grid[r][c].getMine() != true) {
                             grid[r][c] = new Tile(true);
                             count++;
-                            if (DEBUG) {
-                                System.out.println("mine placed 1");
-                            }
                         }
                     } else {
                         grid[r][c] = new Tile(false);
-                        if (DEBUG) {
-                            System.out.println("mine placed 3");
-                        }
                     }
                 }
             }
@@ -159,47 +150,52 @@ public class Minesweeper {
             System.out.println();
         }
     }
-    public void setCheckedFalse(){
-        for (int r = 0; r < grid.length ; r++) {
+
+    public void setCheckedFalse() {
+        for (int r = 0; r < grid.length; r++) {
             for (int c = 0; c < grid[r].length; c++) {
                 grid[r][c].setChecked(false);
             }
         }
     }
+
     // the first click the player does
     public void appear(int x, int y) {
-        // if outside edge 
-        if (x < 0|| x > grid.length-1 || y < 0 || y > grid[x].length -1) {
+        // if outside edge
+        if (firstTime == 0) {
+            grid[x][y].setMine(false);
+            firstTime += 1;
+        }
+        if (x < 0 || x > grid.length - 1 || y < 0 || y > grid[x].length - 1) {
             // System.out.println("");
             return;
         }
-        
-        if(grid[x][y].getChecked()){
+
+        if (grid[x][y].getChecked()) {
             return;
         }
         grid[x][y].setChecked(true);
         // if mine
-         if (grid[x][y].getMine() ) {
+        if (grid[x][y].getMine()) {
             grid[x][y].setChecked(true);
             System.out.println("mine");
             return;
-        }
-        else if(grid[x][y].getNumber() > 0){
+        } else if (grid[x][y].getNumber() > 0) {
             grid[x][y].setChecked(true);
             grid[x][y].reveal();
             return;
         }
         // if number
-         else {
+        else {
             grid[x][y].reveal();
             appear(x - 1, y);
-            appear(x - 1, y+1);
-            appear(x - 1, y-1);
+            appear(x - 1, y + 1);
+            appear(x - 1, y - 1);
             appear(x, y + 1);
             appear(x, y - 1);
             appear(x + 1, y);
-            appear(x + 1, y+1);
-            appear(x + 1, y-1);
+            appear(x + 1, y + 1);
+            appear(x + 1, y - 1);
         }
     }
 

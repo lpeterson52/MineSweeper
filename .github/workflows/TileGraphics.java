@@ -4,12 +4,26 @@ import java.awt.Graphics;
 import java.awt.Font;
 import javax.swing.JLabel;
 import java.awt.event.*;
+import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.geom.Path2D;    
+import javax.swing.*;
+
 public class TileGraphics implements MouseListener{
-    public TileGraphics(int x, int y, int num,Graphics g,boolean revealed) {
+    public TileGraphics(int x, int y, int num,Graphics g,boolean revealed,boolean hasFlag) {
         drawTile(x,y,num,g,revealed);
+        if(hasFlag){
+            drawFlag(x+25,y+15,g);
+        }
     }
     JLabel label;
-    
+    public TileGraphics(){
+        
+    }
     public void drawTile(int x, int y, int num, Graphics g,boolean revealed) {
         // set font and size
         Font stringFont = new Font("SansSerif", Font.PLAIN, 30);
@@ -84,5 +98,15 @@ public class TileGraphics implements MouseListener{
 
     @Override
     public void mouseReleased(MouseEvent e) {
+    }
+
+    public void drawFlag(int xLocation, int yLocation, Graphics graphics){
+
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect( xLocation-3,  yLocation,  3,  15);
+        graphics.fillRect( xLocation - 9,  yLocation + 12,  14,  3);
+        graphics.setColor(Color.RED);
+        graphics.fillPolygon(new int[] {xLocation, xLocation - 15, xLocation}, new int[] {yLocation + 8, yLocation, yLocation-8}, 3);
+        
     }
 }

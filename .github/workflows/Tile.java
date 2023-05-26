@@ -8,6 +8,10 @@ public class Tile {
         number = 0;
         this.hasMine = hasMine;
         revealed = false;
+        flagged = false;
+    }
+    public void setFlag(boolean y){
+        flagged = y;
     }
     public boolean getFlag(){
         return flagged;
@@ -17,6 +21,9 @@ public class Tile {
     }
     public boolean getChecked(){
         return checked;
+    }
+    public void setMine(boolean x){
+        hasMine = x;
     }
     public boolean getMine(){
         return hasMine;
@@ -32,5 +39,6 @@ public class Tile {
     }
     public void reveal(){
         revealed = true;
+        flagged = false;
     }
 }
